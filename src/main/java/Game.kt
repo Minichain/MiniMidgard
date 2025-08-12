@@ -2,6 +2,7 @@ import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL13.GL_TEXTURE0
 import org.lwjgl.opengl.GL13.glActiveTexture
 import org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER
+import org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER
 import org.lwjgl.opengl.GL15.GL_STATIC_DRAW
 import org.lwjgl.opengl.GL15.glBindBuffer
 import org.lwjgl.opengl.GL15.glBufferData
@@ -69,26 +70,29 @@ object Game {
 
   //TESTING
   fun renderTestingTriangles() {
-    val verticesTriangle01: FloatArray = floatArrayOf(
-      1.0f, 1.0f, 0.0f,
-      0.0f, 1.0f, 0.0f,
-      1.0f, 0.0f, 0.0f
+
+    val vertices: FloatArray = floatArrayOf(
+      0.5f, 0.5f, 0.0f,
+      -0.5f, 0.5f, 0.0f,
+      0.5f, -0.5f, 0.0f,
+      -0.5f, -0.5f, 0.0f
     )
 
-    val verticesTriangle02: FloatArray = floatArrayOf(
-      -1.0f, -1.0f, 0.0f,
-      0.0f, -1.0f, 0.0f,
-      -1.0f, 0.0f, 0.0f
+    val indices: IntArray = intArrayOf(
+      0, 1, 2,  // first triangle
+      1, 3, 2   // second triangle
     )
 
     val vao = glGenVertexArrays()
     val vbo = glGenBuffers()
+    val ebo = glGenBuffers()
     glBindVertexArray(vao)
     glBindBuffer(GL_ARRAY_BUFFER, vbo)
-    glBufferData(GL_ARRAY_BUFFER, verticesTriangle01, GL_STATIC_DRAW)
+    glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW)
 
-    //TODO??
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, 12, 0)
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * Float.SIZE_BYTES, 0)
     glEnableVertexAttribArray(0)
 
     glBindBuffer(GL_ARRAY_BUFFER, 0)
@@ -99,7 +103,10 @@ object Game {
 
     GraphicsManager.useShader(1)
     glBindVertexArray(vao)
-    glDrawArrays(GL_TRIANGLES, 0, 3)
+//    glDrawArrays(GL_TRIANGLES, 0, indices.size)
+    glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)
+
+    glBindVertexArray(0)
 
 //    glEnable(GL_BLEND)
 //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
