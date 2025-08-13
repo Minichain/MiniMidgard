@@ -21,7 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import org.lwjgl.opengl.GL11.GL_TEXTURE_2D
 import org.lwjgl.opengl.GL20
+import org.lwjgl.opengl.GL30.glGenerateMipmap
 import org.lwjgl.stb.STBImage.*
 import org.lwjgl.system.MemoryStack
 import java.nio.ByteBuffer
@@ -106,13 +108,14 @@ class Texture {
       texture.bind()
 
 //      texture.setParameter(GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_BORDER)
-      texture.setParameter(GL20.GL_TEXTURE_WRAP_S, GL20.GL_MIRRORED_REPEAT)
+      texture.setParameter(GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT)
 //      texture.setParameter(GL20.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_BORDER)
-      texture.setParameter(GL20.GL_TEXTURE_WRAP_T, GL20.GL_MIRRORED_REPEAT)
-      texture.setParameter(GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_NEAREST)
-      texture.setParameter(GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_NEAREST)
+      texture.setParameter(GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT)
+      texture.setParameter(GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR_MIPMAP_LINEAR)
+      texture.setParameter(GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_LINEAR)
 
       texture.uploadData(GL20.GL_RGBA, width, height, GL20.GL_RGBA, data)
+      glGenerateMipmap(GL_TEXTURE_2D)
 
       return texture
     }

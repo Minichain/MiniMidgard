@@ -37,12 +37,12 @@ object GraphicsManager {
     //Clear frame
     glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
-    glLoadIdentity() //Cleans out any matrix mode
-    glOrtho(0.0, Parameters.resolutionWidth.toDouble(), Parameters.resolutionHeight.toDouble(), 0.0, 1.0, -1.0)
+//    glLoadIdentity() //Cleans out any matrix mode
+//    glOrtho(0.0, Parameters.resolutionWidth.toDouble(), Parameters.resolutionHeight.toDouble(), 0.0, 1.0, -1.0)
 
     //Face Culling
-    glEnable(GL_CULL_FACE)
-    glCullFace(GL_BACK)
+//    glEnable(GL_CULL_FACE)
+//    glCullFace(GL_BACK)
   }
 
   fun loadShader(shaderName: String): Int {
@@ -107,7 +107,7 @@ object GraphicsManager {
   fun updateShadersUniforms() {
     val windowWidthUniform = glGetUniformLocation(programShader01, "windowWidth")
     val windowHeightUniform = glGetUniformLocation(programShader01, "windowHeight")
-    val textureUniform01 = glGetUniformLocation(programShader01, "texture01")
+    val textureUniform01 = glGetUniformLocation(programShader01, "ourTexture")
 
     glUseProgram(programShader01)
 //    glUniform1f(windowWidthUniform, Window.width.toFloat())

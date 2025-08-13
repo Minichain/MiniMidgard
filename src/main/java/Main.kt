@@ -35,8 +35,6 @@ private fun runGameLoopUntilStopped() {
     }
     lastUpdateTime = System.nanoTime()
   }
-
-
 }
 
 private fun gameIsRunning() =
