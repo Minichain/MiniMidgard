@@ -70,27 +70,32 @@ class Poring {
 
     spriteFrame = (spriteFrame + 1) % getSpriteCount()
 
-    val u = getSpriteXOffset().fractionOf(sprite.height) + spriteFrame.toFloat() * getSpriteWidth().fractionOf(sprite.width)
+    val u1 = getSpriteXOffset().fractionOf(sprite.height) + spriteFrame.toFloat() * getSpriteWidth().fractionOf(sprite.width)
     val v2 = 1f - getSpriteYOffset().fractionOf(sprite.height)
-    val v = v2 - getSpriteHeight().fractionOf(sprite.height)
-    val u2 = u + getSpriteWidth().fractionOf(sprite.width)
+    val v1 = v2 - getSpriteHeight().fractionOf(sprite.height)
+    val u2 = u1 + getSpriteWidth().fractionOf(sprite.width)
+
+    val x1 = coordinates.x - size * getSpriteWidth().fractionOf(Window.width) / 2f
+    val y1 = coordinates.y - size * getSpriteHeight().fractionOf(Window.height) / 2f
+    val x2 = coordinates.x + size * getSpriteWidth().fractionOf(Window.width) / 2f
+    val y2 = coordinates.y + size * getSpriteHeight().fractionOf(Window.height) / 2f
 
     val vertices: FloatArray = floatArrayOf(
-      coordinates.x + size * getSpriteWidth().fractionOf(sprite.width) / 2f, coordinates.y + size * getSpriteHeight().fractionOf(sprite.height) / 2f, 0.0f,
+      x2, y2, 0.0f,
       1f, 1f, 1f,
       u2, v2,
 
-      coordinates.x + size * getSpriteWidth().fractionOf(sprite.width) / 2f, coordinates.y + size * -getSpriteHeight().fractionOf(sprite.height) / 2f, 0.0f,
+      x2, y1, 0.0f,
       1f, 1f, 1f,
-      u2, v,
+      u2, v1,
 
-      coordinates.x + size * -getSpriteWidth().fractionOf(sprite.width) / 2f, coordinates.y + size * -getSpriteHeight().fractionOf(sprite.height) / 2f, 0.0f,
+      x1, y1, 0.0f,
       1f, 1f, 1f,
-      u, v,
+      u1, v1,
 
-      coordinates.x + size * -getSpriteWidth().fractionOf(sprite.width) / 2f, coordinates.y + size * getSpriteHeight().fractionOf(sprite.height) / 2f, 0.0f,
+      x1, y2, 0.0f,
       1f, 1f, 1f,
-      u, v2
+      u1, v2
     )
 
     val indices: IntArray = intArrayOf(
