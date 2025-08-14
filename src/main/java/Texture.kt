@@ -107,12 +107,10 @@ class Texture {
 
       texture.bind()
 
-//      texture.setParameter(GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_BORDER)
-      texture.setParameter(GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT)
-//      texture.setParameter(GL20.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_BORDER)
-      texture.setParameter(GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT)
-      texture.setParameter(GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR_MIPMAP_LINEAR)
-      texture.setParameter(GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_LINEAR)
+      texture.setParameter(GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_BORDER)
+      texture.setParameter(GL20.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_BORDER)
+      texture.setParameter(GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_NEAREST)
+      texture.setParameter(GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_NEAREST)
 
       texture.uploadData(GL20.GL_RGBA, width, height, GL20.GL_RGBA, data)
       glGenerateMipmap(GL_TEXTURE_2D)

@@ -1,3 +1,4 @@
+import org.lwjgl.glfw.GLFW
 import org.lwjgl.glfw.GLFW.glfwSetKeyCallback
 import org.lwjgl.glfw.GLFWKeyCallback
 
@@ -8,7 +9,11 @@ object InputListener {
   init {
     keyCallback = object : GLFWKeyCallback() {
       override fun invoke(window: Long, key: Int, scanCode: Int, action: Int, mods: Int) {
-        GameStatus.stopGame()
+        when (key) {
+          GLFW.GLFW_KEY_ESCAPE -> {
+            GameStatus.stopGame()
+          }
+        }
       }
     }
     glfwSetKeyCallback(Window.window, keyCallback)
