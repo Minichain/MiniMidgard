@@ -35,6 +35,7 @@ object GraphicsManager {
     gpuCalls = 0
 
     //Clear frame
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
 //    glLoadIdentity() //Cleans out any matrix mode

@@ -18,46 +18,42 @@ import org.lwjgl.opengl.GL20.glVertexAttribPointer
 import org.lwjgl.opengl.GL30.glBindVertexArray
 import org.lwjgl.opengl.GL30.glGenVertexArrays
 
-class Player {
+class Poring {
 
-  private val sprite: Texture = Texture.loadTexture("src/main/resources/sprites/body_male_novice.png")
+  private val sprite: Texture = Texture.loadTexture("src/main/resources/sprites/poring.png")
 
-  private val coordinates = Coordinates(-0.5f, 0.0f)
+  private val coordinates = Coordinates(0.5f, 0.0f)
 
-  enum class PlayerState {
+  enum class EnemyState {
     Standing,
-    Walking,
-    Sitting
+    Walking
   }
 
-  private var playerState = PlayerState.Walking
+  private var enemyState = EnemyState.Standing
+
 
   private fun getSpriteXOffset(): Int =
-    when (playerState) {
-      PlayerState.Standing -> 0
-      PlayerState.Walking -> 8
-      PlayerState.Sitting -> 232
+    when (enemyState) {
+      EnemyState.Standing -> 0
+      EnemyState.Walking -> 0
     }
 
   private fun getSpriteYOffset(): Int =
-    when (playerState) {
-      PlayerState.Standing -> 0
-      PlayerState.Walking -> 94
-      PlayerState.Sitting -> 0
+    when (enemyState) {
+      EnemyState.Standing -> 0
+      EnemyState.Walking -> 0
     }
 
   private fun getSpriteWidth(): Int =
-    when (playerState) {
-      PlayerState.Standing -> 52
-      PlayerState.Walking -> 48
-      PlayerState.Sitting -> 52
+    when (enemyState) {
+      EnemyState.Standing -> 56
+      EnemyState.Walking -> 56
     }
 
   private fun getSpriteHeight(): Int =
-    when (playerState) {
-      PlayerState.Standing -> 96
-      PlayerState.Walking -> 96
-      PlayerState.Sitting -> 96
+    when (enemyState) {
+      EnemyState.Standing -> 58
+      EnemyState.Walking -> 58
     }
 
   private val size: Float = 8f
@@ -65,10 +61,9 @@ class Player {
   private var spriteFrame = 0
 
   private fun getSpriteCount(): Int =
-    when (playerState) {
-      PlayerState.Standing -> 5
-      PlayerState.Walking -> 8
-      PlayerState.Sitting -> 5
+    when (enemyState) {
+      EnemyState.Standing -> 4
+      EnemyState.Walking -> 4
     }
 
   fun render() {

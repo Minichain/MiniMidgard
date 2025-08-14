@@ -1,6 +1,7 @@
 object Game {
 
   var player: Player? = null
+  var poring: Poring? = null
 
   fun startGame() {
     println("Starting game...")
@@ -14,9 +15,11 @@ object Game {
     GraphicsManager.prepareFrame()
     GraphicsManager.updateShadersUniforms()
     if (player == null) {
+      poring = Poring()
       player = Player()
     }
-    player?.drawSprite()
+    player?.render()
+    poring?.render()
   }
 
   fun stopGame() {
