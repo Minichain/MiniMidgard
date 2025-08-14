@@ -5,11 +5,11 @@ import kotlin.system.exitProcess
 fun main() {
   println("MiniMidgard START")
   System.setProperty("org.lwjgl.librarypath", File("natives/windows/x64").absolutePath)
+  println("OS Name " + System.getProperty("os.name"))
+  println("OS Version " + System.getProperty("os.version"))
   initializeGLFW()
   InputListener
   Game.startGame()
-  println("OS Name " + System.getProperty("os.name"))
-  println("OS Version " + System.getProperty("os.version"))
   runGameLoopUntilStopped()
   exit()
 }
@@ -49,6 +49,7 @@ private fun updateAndRender(timeElapsedMillis: Long) {
 
 private fun exit() {
   Game.stopGame()
+  GraphicsManager.deleteBuffers()
   GLFW.glfwTerminate()
   exitProcess(0)
 }

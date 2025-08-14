@@ -1,0 +1,36 @@
+enum class Resolution(
+  val width: Int,
+  val height: Int
+) {
+  /**
+   * Only resolutions with ratio 16:9 & 4:3, for now.
+   * More will be added in the future.
+   */
+  RESOLUTION_640_480(640, 480),  //4:3
+  RESOLUTION_854_480(854, 480),
+  RESOLUTION_1024_576(1024, 576),  //16:9
+  RESOLUTION_1024_600(1024, 600),
+  RESOLUTION_1280_720(1280, 720),  //16:9, 720p, HD
+  RESOLUTION_1024_768(1024, 768),  //4:3
+  RESOLUTION_1600_900(1600, 900),
+  RESOLUTION_1920_1080(1920, 1080),  //16:9, 1080p, Full HD
+  RESOLUTION_2560_1080(2560, 1080),  //21:9
+  RESOLUTION_2560_1440(2560, 1440),  //16:9
+  RESOLUTION_3840_2160(3840, 2160); //16:9, 4K
+
+  override fun toString(): String {
+    return when (this) {
+      RESOLUTION_640_480 -> "640x480"
+      RESOLUTION_854_480 -> "854x480"
+      RESOLUTION_1024_576 -> "1024x576"
+      RESOLUTION_1024_600 -> "1024x600"
+      RESOLUTION_1280_720 -> "1280x720"
+      RESOLUTION_1024_768 -> "1024x768"
+      RESOLUTION_1600_900 -> "1600x900"
+      RESOLUTION_1920_1080 -> "1920x1080"
+      RESOLUTION_2560_1080 -> "2560x1080"
+      RESOLUTION_2560_1440 -> "2560x1440"
+      RESOLUTION_3840_2160 -> "3840x2160"
+    }
+  }
+}

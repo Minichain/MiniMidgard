@@ -1,8 +1,8 @@
 #version 330 core
 out vec4 FragColor;
 
-//uniform float windowWidth;
-//uniform float windowHeight;
+uniform float windowWidth;
+uniform float windowHeight;
 
 in vec3 ourColor;
 in vec2 TexCoord;
@@ -10,6 +10,7 @@ in vec2 TexCoord;
 uniform sampler2D ourTexture;
 
 void main() {
-    FragColor = texture(ourTexture, TexCoord);
-//    FragColor = vec4(1.0);
+  vec4 texColor = texture(ourTexture, TexCoord);
+  if (texColor.a < 0.1) discard;
+  FragColor = texColor;
 }
