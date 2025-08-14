@@ -113,7 +113,7 @@ class Texture {
       texture.setParameter(GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_NEAREST)
 
       texture.uploadData(GL20.GL_RGBA, width, height, GL20.GL_RGBA, data)
-      glGenerateMipmap(GL_TEXTURE_2D)
+//      glGenerateMipmap(GL_TEXTURE_2D)
 
       return texture
     }

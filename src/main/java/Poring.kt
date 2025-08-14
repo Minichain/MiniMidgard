@@ -46,8 +46,8 @@ class Poring {
 
   private fun getSpriteWidth(): Int =
     when (enemyState) {
-      EnemyState.Standing -> 56
-      EnemyState.Walking -> 56
+      EnemyState.Standing -> 60
+      EnemyState.Walking -> 60
     }
 
   private fun getSpriteHeight(): Int =
@@ -56,7 +56,7 @@ class Poring {
       EnemyState.Walking -> 58
     }
 
-  private val size: Float = 8f
+  private val size: Float = 4f
 
   private var spriteFrame = 0
 

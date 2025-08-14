@@ -60,7 +60,7 @@ class Player {
       PlayerState.Sitting -> 96
     }
 
-  private val size: Float = 8f
+  private val size: Float = 4f
 
   private var spriteFrame = 0
 
