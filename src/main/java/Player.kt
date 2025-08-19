@@ -6,7 +6,7 @@ data object Player : Entity(zeroCoordinates()) {
     Sitting
   }
 
-  private var playerState = PlayerState.Walking
+  private var state = PlayerState.Walking
 
   private val bodySprite = BodyMaleNoviceSprite()
   private val headSprite = PlayerHeadSprite()
@@ -28,7 +28,7 @@ data object Player : Entity(zeroCoordinates()) {
     }
 
     val isMoving = movementVector.module() > 0
-    playerState = if (isMoving) {
+    state = if (isMoving) {
       PlayerState.Walking
     } else {
       if (InputListener.sitting) {
@@ -62,15 +62,15 @@ data object Player : Entity(zeroCoordinates()) {
 
   override fun render() {
     bodySprite.render(
-      cameraCoordinates[0] / Parameters.resolution.width,
-      cameraCoordinates[1] / Parameters.resolution.height,
-      playerState,
+      (cameraCoordinates[0] - (Parameters.resolution.width / 2f)) / Parameters.resolution.width,
+      (cameraCoordinates[1] - (Parameters.resolution.height / 2f)) / Parameters.resolution.height,
+      state,
       frameIteration.toInt(),
       orientation
     )
     headSprite.render(
-      headCameraCoordinates[0] / Parameters.resolution.width,
-      headCameraCoordinates[1] / Parameters.resolution.height,
+      (headCameraCoordinates[0] - (Parameters.resolution.width / 2f)) / Parameters.resolution.width,
+      (headCameraCoordinates[1] - (Parameters.resolution.height / 2f)) / Parameters.resolution.height,
       orientation
     )
   }

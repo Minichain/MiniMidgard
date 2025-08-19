@@ -160,15 +160,15 @@ class BodyMaleNoviceSprite : Sprite() {
     val xOffset = getSpriteXOffset(spriteAnimation, spriteOrientation, frame)
     val yOffset = getSpriteYOffset(spriteAnimation, spriteOrientation, frame)
 
-    val u1 = xOffset.fractionOf(spriteSheet.width)
-    val v2 = 1f - yOffset.fractionOf(spriteSheet.height)
-    val v1 = v2 - getSpriteHeight(spriteAnimation).fractionOf(spriteSheet.height)
-    val u2 = u1 + getSpriteWidth(spriteAnimation).fractionOf(spriteSheet.width)
+    val u1 = xOffset.toFloat() / spriteSheet.width.toFloat()
+    val v2 = 1f - yOffset.toFloat() / spriteSheet.height.toFloat()
+    val v1 = v2 - getSpriteHeight(spriteAnimation) / spriteSheet.height.toFloat()
+    val u2 = u1 + getSpriteWidth(spriteAnimation) / spriteSheet.width.toFloat()
 
-    val x1 = x - Camera.zoom * getSpriteWidth(spriteAnimation).fractionOf(Window.resolution.width) / 2f
-    val y1 = y - Camera.zoom * getSpriteHeight(spriteAnimation).fractionOf(Window.resolution.height) / 2f
-    val x2 = x + Camera.zoom * getSpriteWidth(spriteAnimation).fractionOf(Window.resolution.width) / 2f
-    val y2 = y + Camera.zoom * getSpriteHeight(spriteAnimation).fractionOf(Window.resolution.height) / 2f
+    val x1 = x - Camera.zoom * (getSpriteWidth(spriteAnimation) / Window.resolution.width.toFloat()) / 2f
+    val y1 = y - Camera.zoom * (getSpriteHeight(spriteAnimation) / Window.resolution.height.toFloat()) / 2f
+    val x2 = x + Camera.zoom * (getSpriteWidth(spriteAnimation) / Window.resolution.width.toFloat()) / 2f
+    val y2 = y + Camera.zoom * (getSpriteHeight(spriteAnimation) / Window.resolution.height.toFloat()) / 2f
 
     if (orientation == Orientation.UpRight || orientation == Orientation.Right || orientation == Orientation.DownRight) {
       GraphicsManager.render(spriteSheet, x1.toFloat(), y1.toFloat(), x2.toFloat(), y2.toFloat(), u2, v1, u1, v2)

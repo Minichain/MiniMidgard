@@ -2,7 +2,7 @@
 class PlayerHeadSprite : Sprite() {
 
   companion object {
-    private val sprite: Texture = Texture.loadTexture("src/main/resources/sprites/head_male_black.png")
+    private val spriteSheet: Texture = Texture.loadTexture("src/main/resources/sprites/head_male_black.png")
   }
 
   private enum class SpriteOrientation {
@@ -52,20 +52,20 @@ class PlayerHeadSprite : Sprite() {
     val xOffset = getSpriteXOffset(spriteOrientation)
     val yOffset = getSpriteYOffset(spriteOrientation)
 
-    val u1 = xOffset.fractionOf(sprite.width)
-    val v2 = 1f - yOffset.fractionOf(sprite.height)
-    val v1 = v2 - getSpriteHeight().fractionOf(sprite.height)
-    val u2 = u1 + getSpriteWidth().fractionOf(sprite.width)
+    val u1 = xOffset.toFloat() / spriteSheet.width.toFloat()
+    val v2 = 1f - yOffset.toFloat() / spriteSheet.height.toFloat()
+    val v1 = v2 - getSpriteHeight() / spriteSheet.height.toFloat()
+    val u2 = u1 + getSpriteWidth() / spriteSheet.width.toFloat()
 
-    val x1 = x - Camera.zoom * getSpriteWidth().fractionOf(Window.resolution.width) / 2f
-    val y1 = y - Camera.zoom * getSpriteHeight().fractionOf(Window.resolution.height) / 2f
-    val x2 = x + Camera.zoom * getSpriteWidth().fractionOf(Window.resolution.width) / 2f
-    val y2 = y + Camera.zoom * getSpriteHeight().fractionOf(Window.resolution.height) / 2f
+    val x1 = x - Camera.zoom * (getSpriteWidth().toFloat() / Window.resolution.width.toFloat()) / 2f
+    val y1 = y - Camera.zoom * (getSpriteHeight().toFloat() / Window.resolution.height.toFloat()) / 2f
+    val x2 = x + Camera.zoom * (getSpriteWidth().toFloat() / Window.resolution.width.toFloat()) / 2f
+    val y2 = y + Camera.zoom * (getSpriteHeight().toFloat() / Window.resolution.height.toFloat()) / 2f
 
     if (orientation == Orientation.UpRight || orientation == Orientation.Right || orientation == Orientation.DownRight) {
-      GraphicsManager.render(sprite, x1.toFloat(), y1.toFloat(), x2.toFloat(), y2.toFloat(), u2, v1, u1, v2)
+      GraphicsManager.render(spriteSheet, x1.toFloat(), y1.toFloat(), x2.toFloat(), y2.toFloat(), u2, v1, u1, v2)
     } else {
-      GraphicsManager.render(sprite, x1.toFloat(), y1.toFloat(), x2.toFloat(), y2.toFloat(), u1, v1, u2, v2)
+      GraphicsManager.render(spriteSheet, x1.toFloat(), y1.toFloat(), x2.toFloat(), y2.toFloat(), u1, v1, u2, v2)
     }
   }
 }

@@ -4,15 +4,15 @@ object EntityManager {
 
   fun loadEntities() {
     entities.add(Player)
-    val amountOfEnemies = 1000
+    val amountOfEnemies = 10
     for (i in 0 until amountOfEnemies) {
       entities.add(Poring())
     }
   }
 
   fun updateEntities(timeElapsedMillis: Long) {
-    entities.sortByDescending { it.cameraCoordinates[1] }
     entities.forEach { it.update(timeElapsedMillis) }
+    entities.sortByDescending { it.cameraCoordinates[1] }
   }
 
   fun renderEntities() {

@@ -13,6 +13,13 @@ fun DoubleArray.toWorldCoordinates(): DoubleArray =
     this@apply[2] = 0.0
   }
 
+//fun DoubleArray.toWorldCoordinates(): DoubleArray =
+//  DoubleArray(3).apply {
+//    this@apply[0] = this@toWorldCoordinates[0] / Camera.zoom + Camera.position[0] - (Camera.getWidth() / 2.0)
+//    this@apply[1] = this@toWorldCoordinates[1] / Camera.zoom + Camera.position[1] - (Camera.getHeight() / 2.0)
+//    this@apply[2] = 0.0
+//  }
+
 fun DoubleArray.minus(coordinates: DoubleArray): DoubleArray =
   DoubleArray(3).apply {
     this@apply[0] = this@minus[0] - coordinates[0]
@@ -29,9 +36,9 @@ fun DoubleArray.plus(coordinates: DoubleArray): DoubleArray =
 
 fun randomCoordinates() =
   DoubleArray(3).apply {
-    this[0] = (-1000..1000).random().toDouble()
-    this[1] = (-1000..1000).random().toDouble()
-    this[2] = (-1000..1000).random().toDouble()
+    this[0] = (-250..250).random().toDouble()
+    this[1] = (-250..250).random().toDouble()
+    this[2] = 0.0 //TODO
   }
 
 fun zeroCoordinates() =
@@ -40,3 +47,6 @@ fun zeroCoordinates() =
     this[1] = 0.0
     this[2] = 0.0
   }
+
+fun DoubleArray.print(): String =
+  "(${this[0]}, ${this[1]}, ${this[2]})"

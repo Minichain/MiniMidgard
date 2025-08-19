@@ -10,6 +10,7 @@ fun main() {
   initializeGLFW()
   InputListener
   Game.startGame()
+  runBackgroundTask()
   runGameLoopUntilStopped()
   exit()
 }

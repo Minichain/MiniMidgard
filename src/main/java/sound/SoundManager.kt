@@ -83,7 +83,7 @@ object SoundManager {
       SoundType.Ambience -> "ambience/$soundName"
     }
     return loadSound(soundPath)?.let { sound ->
-      Sound(sound, listOfSounds.size, soundType)
+      Sound(soundName, sound, listOfSounds.size, soundType)
     }
   }
 
@@ -142,7 +142,7 @@ object SoundManager {
   }
 
   fun playSound(sound: Sound) {
-    if (isPlaying(sound)) {
+    if (sound.soundType == SoundType.Music && isPlaying(sound)) {
       return
     }
     AL10.alSourcePlay(source.get(sound.index))

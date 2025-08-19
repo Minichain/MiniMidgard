@@ -1,9 +1,6 @@
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-fun Int.fractionOf(total: Int): Float =
-  this.toFloat() / total.toFloat()
-
 fun DoubleArray.normalizeVector(): DoubleArray {
   var vectorNormalized = DoubleArray(size)
   val vectorModule = module()
