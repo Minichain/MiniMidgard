@@ -29,9 +29,9 @@ fun DoubleArray.plus(coordinates: DoubleArray): DoubleArray =
 
 fun randomCoordinates() =
   DoubleArray(3).apply {
-    this[0] = (-500..500).random().toDouble()
-    this[1] = (-500..500).random().toDouble()
-    this[2] = (-500..500).random().toDouble()
+    this[0] = (-1000..1000).random().toDouble()
+    this[1] = (-1000..1000).random().toDouble()
+    this[2] = (-1000..1000).random().toDouble()
   }
 
 fun zeroCoordinates() =

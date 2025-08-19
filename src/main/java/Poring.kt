@@ -12,6 +12,7 @@ class Poring(
   private val sprite = PoringSprite()
 
   override fun update(timeElapsedMillis: Long) {
+    if (Math.random() < 0.0001) SoundManager.playSound(SoundManager.poringEffect01)
     super.update(timeElapsedMillis)
   }
 

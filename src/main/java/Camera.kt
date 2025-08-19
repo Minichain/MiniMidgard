@@ -6,7 +6,7 @@ object Camera {
     private set
   var direction = zeroCoordinates()
     private set
-  var zoom: Double = 2.0
+  var zoom: Double = 4.0
     private set
   private var minZoom: Double = 1.0
   private var maxZoom: Double = 8.0

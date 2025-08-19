@@ -4,8 +4,8 @@ object Scene {
   val tiles: MutableList<Tile> = mutableListOf()
 
   init {
-    for (i in -8 until 8) {
-      for (j in -8 until 8) {
+    for (i in -24 until 24) {
+      for (j in -24 until 24) {
         tiles.add(
           Tile(
             DoubleArray(3).apply {
