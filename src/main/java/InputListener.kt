@@ -1,7 +1,14 @@
 import org.lwjgl.glfw.GLFW
+import org.lwjgl.glfw.GLFW.GLFW_MOD_SHIFT
+import org.lwjgl.glfw.GLFW.GLFW_PRESS
+import org.lwjgl.glfw.GLFW.GLFW_REPEAT
+import org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback
 import org.lwjgl.glfw.GLFW.glfwSetKeyCallback
+import org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback
 import org.lwjgl.glfw.GLFW.glfwSetScrollCallback
+import org.lwjgl.glfw.GLFWCursorPosCallback
 import org.lwjgl.glfw.GLFWKeyCallback
+import org.lwjgl.glfw.GLFWMouseButtonCallback
 import org.lwjgl.glfw.GLFWScrollCallback
 
 object InputListener {
@@ -20,19 +27,19 @@ object InputListener {
           GameStatus.stopGame()
         }
         GLFW.GLFW_KEY_W -> {
-          movingUp = action == 1 || action == 2
+          movingUp = action == GLFW_PRESS || action == GLFW_REPEAT
         }
         GLFW.GLFW_KEY_A -> {
-          movingLeft = action == 1 || action == 2
+          movingLeft = action == GLFW_PRESS || action == GLFW_REPEAT
         }
         GLFW.GLFW_KEY_S -> {
-          movingDown = action == 1 || action == 2
+          movingDown = action == GLFW_PRESS || action == GLFW_REPEAT
         }
         GLFW.GLFW_KEY_D -> {
-          movingRight = action == 1 || action == 2
+          movingRight = action == GLFW_PRESS || action == GLFW_REPEAT
         }
         GLFW.GLFW_KEY_INSERT -> {
-          if (action == 1 || action == 2) {
+          if (action == GLFW_PRESS || action == GLFW_REPEAT) {
             sitting = !sitting
           }
         }
@@ -42,13 +49,49 @@ object InputListener {
 
   private var scrollCallback: GLFWScrollCallback = object : GLFWScrollCallback() {
     override fun invoke(window: Long, p1: Double, p2: Double) {
-      if (p2 > 0.0) Camera.increaseZoom()
-      else Camera.decreaseZoom()
+      if (p2 > 0.0) Camera.changeCameraFov(-1.0f)
+      else Camera.changeCameraFov(1.0f)
+    }
+  }
+
+  var mouseRightButtonHold = false
+  var mouseRightButtonPlusShiftHold = false
+
+  private var mouseCallback: GLFWMouseButtonCallback = object : GLFWMouseButtonCallback() {
+    override fun invoke(window: Long, button: Int, action: Int, mods: Int) {
+      when (button) {
+        GLFW.GLFW_MOUSE_BUTTON_RIGHT -> {
+          if (mods == GLFW_MOD_SHIFT) {
+            println("mouseRightButtonPlusShiftHold")
+            mouseRightButtonPlusShiftHold = action == GLFW_PRESS || action == GLFW_REPEAT
+          } else {
+            mouseRightButtonHold = action == GLFW_PRESS || action == GLFW_REPEAT
+          }
+        }
+      }
+    }
+  }
+
+  private var lastXMousePosition = 0.0
+  private var lastYMousePosition = 0.0
+
+  private var cursorPosCallback: GLFWCursorPosCallback = object : GLFWCursorPosCallback() {
+    override fun invoke(window: Long, x: Double, y: Double) {
+      if (mouseRightButtonHold) {
+        Camera.changeCameraAngle(0.01 * (lastXMousePosition - x))
+        lastXMousePosition = x
+      }
+      if (mouseRightButtonPlusShiftHold) {
+        Camera.changeCameraHeight(-1 * (lastYMousePosition - y))
+        lastYMousePosition = y
+      }
     }
   }
 
   init {
     glfwSetKeyCallback(Window.window, keyCallback)
     glfwSetScrollCallback(Window.window, scrollCallback)
+    glfwSetMouseButtonCallback(Window.window, mouseCallback)
+    glfwSetCursorPosCallback(Window.window, cursorPosCallback)
   }
 }

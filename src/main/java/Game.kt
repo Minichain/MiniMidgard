@@ -1,15 +1,17 @@
+
 object Game {
 
   fun startGame() {
     println("Starting game...")
     GraphicsManager.prepareOpenGL()
     EntityManager.loadEntities()
+    SoundManager.playSound(SoundManager.music01)
   }
 
   fun update(timeElapsedMillis: Long) {
+    Camera.update(timeElapsedMillis)
     EntityManager.updateEntities(timeElapsedMillis)
     Scene.update(timeElapsedMillis)
-    Camera.update(timeElapsedMillis)
   }
 
   fun render() {

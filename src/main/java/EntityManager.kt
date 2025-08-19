@@ -11,7 +11,6 @@ object EntityManager {
   }
 
   fun updateEntities(timeElapsedMillis: Long) {
-    entities.sortByDescending { it.cameraCoordinates[1] }
     entities.forEach { it.update(timeElapsedMillis) }
   }
 

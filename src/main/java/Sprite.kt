@@ -1,4 +1,2 @@
 
-abstract class Sprite {
-
-}
+abstract class Sprite()

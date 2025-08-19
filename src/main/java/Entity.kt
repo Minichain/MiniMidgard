@@ -3,7 +3,7 @@ abstract class Entity(
 ) {
 
   var cameraCoordinates: DoubleArray = worldCoordinates.toCameraCoordinates()
-  var frameIteration: Float = 0f
+  var frameIteration: Float = Math.random().toFloat() * 10f
 
   open fun update(timeElapsedMillis: Long) {
     cameraCoordinates = worldCoordinates.toCameraCoordinates()

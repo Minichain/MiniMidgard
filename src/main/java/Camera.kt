@@ -1,55 +1,88 @@
 object Camera {
 
-  var position = zeroCoordinates()
+  private var cameraShift = doubleArrayOf(0.0, 10.0, 10.0)
+  var cameraPosition = doubleArrayOf(0.0, 0.0, 0.0).plus(cameraShift)
     private set
-  var target = zeroCoordinates()
+  var cameraTarget = doubleArrayOf(0.0, 0.0, 0.0)
     private set
-  var direction = zeroCoordinates()
+  var cameraDirection = doubleArrayOf(0.0, 0.0, 0.0)
     private set
-  var zoom: Double = 2.0
+  var cameraRight = doubleArrayOf(0.0, 0.0, 0.0)
     private set
-  private var minZoom: Double = 1.0
-  private var maxZoom: Double = 8.0
+  var cameraUp = doubleArrayOf(0.0, 0.0, 0.0)
+    private set
+  var viewMatrix: Array<DoubleArray> = arrayOf(
+    doubleArrayOf(0.0, 0.0, 0.0, 0.0),
+    doubleArrayOf(0.0, 0.0, 0.0, 0.0),
+    doubleArrayOf(0.0, 0.0, 0.0, 0.0),
+    doubleArrayOf(0.0, 0.0, 0.0, 0.0)
+  )
+    private set
+  var perspectiveMatrix: Matrix = Matrix(
+    rows = 4,
+    columns = 4,
+    array = floatArrayOf(
+      0f, 0f, 0f, 0f,
+      0f, 0f, 0f, 0f,
+      0f, 0f, 0f, 0f,
+      0f, 0f, 0f, 0f
+    )
+  )
+    private set
 
-  /**
-   * Amount of pixels we are able to see in the X axis.
-   */
-  fun getWidth(): Double = Parameters.resolution.width.toDouble() / zoom
+  private var cameraAngle: Double = 0.0
+  private var cameraFov: Float = 75.0f
+  private var cameraHeight: Double = 500.0
 
-  /**
-   * Amount of pixels we are able to see in the Y axis.
-   */
-  fun getHeight(): Double = Parameters.resolution.height.toDouble() / zoom
-
-  fun setZoom(zoom: Double) {
-    if (zoom <= minZoom) Camera.zoom = minZoom
-    else if (zoom >= maxZoom) Camera.zoom = maxZoom
-    else Camera.zoom = zoom
+  fun changeCameraAngle(angle: Double) {
+    cameraAngle += angle
   }
 
-  fun increaseZoom() {
-    setZoom(zoom + 1.0 / zoom)
+  fun changeCameraHeight(height: Double) {
+    cameraHeight += height
   }
 
-  fun decreaseZoom() {
-    setZoom(zoom - 1.0 / zoom)
+  fun changeCameraFov(increase: Float) {
+    cameraFov += increase
   }
 
   fun update(timeElapsed: Long) {
-    updateVectors()
-    val followSpeed = 0.0015 * zoom
-    var cameraVelocityVector = DoubleArray(2).apply {
-      this[0] = Player.worldCoordinates[0] - position[0]
-      this[1] = Player.worldCoordinates[1] - position[1]
-    }
-    val cameraSpeed = cameraVelocityVector.module() * followSpeed * timeElapsed
-    cameraVelocityVector = cameraVelocityVector.normalizeVector()
-    this.position[0] = position[0] + (cameraVelocityVector[0] * cameraSpeed)
-    this.position[1] = position[1] + (cameraVelocityVector[1] * cameraSpeed)
+//    cameraFov = sin(System.currentTimeMillis() / 1000.0) * 15.0 + 75.0
+    cameraShift = doubleArrayOf(0.0, cameraHeight, 250.0)
+    cameraTarget = Player.worldCoordinates
+    cameraPosition = cameraTarget.plus(cameraShift.rotateYAxis(cameraAngle))
+    cameraDirection = cameraTarget.minus(cameraPosition).normalizeVector()
+    cameraRight = doubleArrayOf(0.0, 1.0, 0.0).cross(cameraDirection).normalizeVector()
+    cameraUp = cameraDirection.cross(cameraRight).normalizeVector()
+
+//    val followSpeed = 0.0015 * zoom
+//    var cameraVelocityVector = goal.minus(cameraPosition)
+//    val cameraSpeed = cameraVelocityVector.module() * followSpeed * timeElapsed
+//    cameraVelocityVector = cameraVelocityVector.normalizeVector().multiplyByFactor(cameraSpeed)
+//    cameraPosition = Player.worldCoordinates.plus(doubleArrayOf(0.0, 100.0, 100.0))
+
+    viewMatrix = makeViewMatrix()
+    perspectiveMatrix = makePerspectiveMatrix(
+      fov = cameraFov,
+      aspect = Window.resolution.height.toFloat() / Window.resolution.width.toFloat(),
+      near = 0.1f,
+      far = 1000.0f
+    )
+    printVectors(timeElapsed)
   }
 
-  private fun updateVectors() {
-    this.target = Player.worldCoordinates
-    this.direction = this.position.minus(this.target).normalizeVector()
+  //TODO Debug
+  private var timeElapsedSinceLastPrint = 0L
+  private fun printVectors(timeElapsed: Long) {
+    timeElapsedSinceLastPrint += timeElapsed
+    if (timeElapsedSinceLastPrint > 5000L) {
+      timeElapsedSinceLastPrint = 0L
+      println("Vectors updated")
+      println("cameraPosition: ${cameraPosition.print()}")
+      println("cameraTarget: ${cameraTarget.print()}")
+      println("cameraDirection: ${cameraDirection.print()}")
+      println("cameraRight: ${cameraRight.print()}")
+      println("cameraUp: ${cameraUp.print()}")
+    }
   }
 }

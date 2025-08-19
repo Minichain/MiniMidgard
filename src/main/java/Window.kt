@@ -16,6 +16,8 @@ object Window {
     window = glfwCreateWindow(resolution.width, resolution.height, "MiniMidgard", 0, 0)
     glfwShowWindow(window)
     glfwMakeContextCurrent(window)
+//    glfwSetWindowAttrib(window, GLFW_MAXIMIZED, GLFW_TRUE)
+//    glfwMaximizeWindow(window)
     glfwPollEvents()
 
     val windowPosCallback = object : GLFWWindowPosCallback() {

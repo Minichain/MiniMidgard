@@ -20,6 +20,7 @@ dependencies {
   implementation(files("libs/lwjgl/lwjgl-openal-natives-windows.jar"))
   implementation(files("libs/lwjgl/lwjgl-stb.jar"))
   implementation(files("libs/lwjgl/lwjgl-stb-natives-windows.jar"))
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
   implementation(kotlin("stdlib-jdk8"))
 }
 

@@ -97,11 +97,13 @@ object GraphicsManager {
   fun updateShadersUniforms() {
     val windowWidthUniform = glGetUniformLocation(programShader01, "windowWidth")
     val windowHeightUniform = glGetUniformLocation(programShader01, "windowHeight")
+    val perspectiveMatrixUniform = glGetUniformLocation(programShader01, "perspectiveMatrix")
     val textureUniform01 = glGetUniformLocation(programShader01, "ourTexture")
 
     glUseProgram(programShader01)
     glUniform1f(windowWidthUniform, Window.resolution.width.toFloat())
     glUniform1f(windowHeightUniform, Window.resolution.height.toFloat())
+    glUniformMatrix4fv(perspectiveMatrixUniform, false, Camera.perspectiveMatrix.toBuffer())
     glUniform1i(textureUniform01, 0)
   }
 
@@ -119,21 +121,29 @@ object GraphicsManager {
   private fun getLogInfo(obj: Int): String =
     glGetProgramInfoLog(obj, glGetProgrami(obj, GL_INFO_LOG_LENGTH))
 
-  fun render(sprite: Texture, x1: Float, y1: Float, x2: Float, y2: Float, u1: Float, v1: Float, u2: Float, v2: Float) {
+  fun render(
+    sprite: Texture,
+    vertex1: FloatArray,
+    vertex2: FloatArray,
+    vertex3: FloatArray,
+    vertex4: FloatArray,
+    u1: Float, v1: Float,
+    u2: Float, v2: Float
+  ) {
     val vertices: FloatArray = floatArrayOf(
-      x2, y2, 0.0f,
+      vertex1[0], vertex1[1], vertex1[2],
       1f, 1f, 1f,
       u2, v2,
 
-      x2, y1, 0.0f,
+      vertex2[0], vertex2[1], vertex2[2],
       1f, 1f, 1f,
       u2, v1,
 
-      x1, y1, 0.0f,
+      vertex3[0], vertex3[1], vertex3[2],
       1f, 1f, 1f,
       u1, v1,
 
-      x1, y2, 0.0f,
+      vertex4[0], vertex4[1], vertex4[2],
       1f, 1f, 1f,
       u1, v2
     )
