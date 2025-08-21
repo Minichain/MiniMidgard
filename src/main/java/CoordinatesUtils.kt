@@ -13,13 +13,6 @@ fun DoubleArray.toWorldCoordinates(): DoubleArray =
     this@apply[2] = 0.0
   }
 
-//fun DoubleArray.toWorldCoordinates(): DoubleArray =
-//  DoubleArray(3).apply {
-//    this@apply[0] = this@toWorldCoordinates[0] / Camera.zoom + Camera.position[0] - (Camera.getWidth() / 2.0)
-//    this@apply[1] = this@toWorldCoordinates[1] / Camera.zoom + Camera.position[1] - (Camera.getHeight() / 2.0)
-//    this@apply[2] = 0.0
-//  }
-
 fun DoubleArray.minus(coordinates: DoubleArray): DoubleArray =
   DoubleArray(3).apply {
     this@apply[0] = this@minus[0] - coordinates[0]

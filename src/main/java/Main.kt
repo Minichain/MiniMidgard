@@ -12,6 +12,7 @@ fun main() {
   Game.startGame()
   runBackgroundTask()
   runGameLoopUntilStopped()
+  cancelScopes()
   exit()
 }
 
