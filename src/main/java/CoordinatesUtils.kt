@@ -1,15 +1,15 @@
 
 fun DoubleArray.toCameraCoordinates(): DoubleArray =
   DoubleArray(3).apply {
-    this@apply[0] = (this@toCameraCoordinates[0] - Camera.position[0] + (Camera.getWidth() / 2.0)) * Camera.zoom
-    this@apply[1] = (this@toCameraCoordinates[1] - Camera.position[1] + (Camera.getHeight() / 2.0)) * Camera.zoom
+    this@apply[0] = (this@toCameraCoordinates[0] - Camera.cameraPosition[0] + (Camera.getWidth() / 2.0)) * Camera.zoom
+    this@apply[1] = (this@toCameraCoordinates[1] - Camera.cameraPosition[1] + (Camera.getHeight() / 2.0)) * Camera.zoom
     this@apply[2] = 0.0
   }
 
 fun DoubleArray.toWorldCoordinates(): DoubleArray =
   DoubleArray(3).apply {
-    this@apply[0] = this@toWorldCoordinates[0] / Camera.zoom + Camera.position[0] - (Camera.getWidth() / 2.0)
-    this@apply[1] = this@toWorldCoordinates[1] / Camera.zoom + Camera.position[1] - (Camera.getHeight() / 2.0)
+    this@apply[0] = this@toWorldCoordinates[0] / Camera.zoom + Camera.cameraPosition[0] - (Camera.getWidth() / 2.0)
+    this@apply[1] = this@toWorldCoordinates[1] / Camera.zoom + Camera.cameraPosition[1] - (Camera.getHeight() / 2.0)
     this@apply[2] = 0.0
   }
 
@@ -25,6 +25,13 @@ fun DoubleArray.plus(coordinates: DoubleArray): DoubleArray =
     this@apply[0] = this@plus[0] + coordinates[0]
     this@apply[1] = this@plus[1] + coordinates[1]
     this@apply[2] = this@plus[2] + coordinates[2]
+  }
+
+fun DoubleArray.cross(coordinates: DoubleArray): DoubleArray =
+  DoubleArray(3).apply {
+    this@apply[0] = this@cross[1] * coordinates[2] - this@cross[2] * coordinates[1]
+    this@apply[1] = this@cross[2] * coordinates[0] - this@cross[0] * coordinates[2]
+    this@apply[2] = this@cross[0] * coordinates[1] - this@cross[1] * coordinates[0]
   }
 
 fun randomCoordinates() =

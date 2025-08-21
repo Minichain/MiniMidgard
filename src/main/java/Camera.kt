@@ -1,10 +1,14 @@
 object Camera {
 
-  var position = zeroCoordinates()
+  var cameraPosition = zeroCoordinates()
     private set
-  var target = zeroCoordinates()
+  var cameraTarget = zeroCoordinates()
     private set
-  var direction = zeroCoordinates()
+  var cameraDirection = zeroCoordinates()
+    private set
+  var cameraRight = zeroCoordinates()
+    private set
+  var cameraUp = zeroCoordinates()
     private set
   var zoom: Double = 4.0
     private set
@@ -39,17 +43,24 @@ object Camera {
     updateVectors()
     val followSpeed = 0.0015 * zoom
     var cameraVelocityVector = DoubleArray(2).apply {
-      this[0] = Player.worldCoordinates[0] - position[0]
-      this[1] = Player.worldCoordinates[1] - position[1]
+      this[0] = Player.worldCoordinates[0] - cameraPosition[0]
+      this[1] = Player.worldCoordinates[1] - cameraPosition[1]
     }
     val cameraSpeed = cameraVelocityVector.module() * followSpeed * timeElapsed
     cameraVelocityVector = cameraVelocityVector.normalizeVector()
-    this.position[0] = position[0] + (cameraVelocityVector[0] * cameraSpeed)
-    this.position[1] = position[1] + (cameraVelocityVector[1] * cameraSpeed)
+    cameraPosition[0] = cameraPosition[0] + (cameraVelocityVector[0] * cameraSpeed)
+    cameraPosition[1] = cameraPosition[1] + (cameraVelocityVector[1] * cameraSpeed)
   }
 
   private fun updateVectors() {
-    this.target = Player.worldCoordinates
-    this.direction = this.position.minus(this.target).normalizeVector()
+    cameraTarget = Player.worldCoordinates
+    cameraDirection = cameraPosition.minus(cameraTarget).normalizeVector()
+    val up = DoubleArray(3).apply {
+      this[0] = 0.0
+      this[1] = 1.0
+      this[2] = 0.0
+    }
+    cameraRight = up.cross(cameraDirection).normalizeVector()
+    cameraUp = cameraDirection.cross(cameraRight)
   }
 }
