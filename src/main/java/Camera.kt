@@ -1,45 +1,56 @@
+import entities.Player
+
 object Camera {
 
-  private var cameraShift = doubleArrayOf(0.0, 10.0, 10.0)
-  var cameraPosition = doubleArrayOf(0.0, 0.0, 0.0).plus(cameraShift)
+  private var cameraShift = Vector3(0f, 10f, 10f)
+  var cameraPosition = Vector3(0f, 0f, 0f).plus(cameraShift)
     private set
-  var cameraTarget = doubleArrayOf(0.0, 0.0, 0.0)
+  var cameraTarget = Vector3(0f, 0f, 0f)
     private set
-  var cameraDirection = doubleArrayOf(0.0, 0.0, 0.0)
+  var cameraFacingVector = Vector3(0f, 0f, 0f)
     private set
-  var cameraRight = doubleArrayOf(0.0, 0.0, 0.0)
+  var cameraRight = Vector3(0f, 0f, 0f)
     private set
-  var cameraUp = doubleArrayOf(0.0, 0.0, 0.0)
+  var cameraUp = Vector3(0f, 0f, 0f)
     private set
-  var viewMatrix: Array<DoubleArray> = arrayOf(
-    doubleArrayOf(0.0, 0.0, 0.0, 0.0),
-    doubleArrayOf(0.0, 0.0, 0.0, 0.0),
-    doubleArrayOf(0.0, 0.0, 0.0, 0.0),
-    doubleArrayOf(0.0, 0.0, 0.0, 0.0)
+  var viewMatrix: Matrix = Matrix(
+    rows = 4,
+    columns = 4,
+    values = arrayOf(
+      floatArrayOf(0f, 0f, 0f, 0f),
+      floatArrayOf(0f, 0f, 0f, 0f),
+      floatArrayOf(0f, 0f, 0f, 0f),
+      floatArrayOf(0f, 0f, 0f, 0f)
+    )
   )
     private set
   var perspectiveMatrix: Matrix = Matrix(
     rows = 4,
     columns = 4,
-    array = floatArrayOf(
-      0f, 0f, 0f, 0f,
-      0f, 0f, 0f, 0f,
-      0f, 0f, 0f, 0f,
-      0f, 0f, 0f, 0f
+    values = arrayOf(
+      floatArrayOf(0f, 0f, 0f, 0f),
+      floatArrayOf(0f, 0f, 0f, 0f),
+      floatArrayOf(0f, 0f, 0f, 0f),
+      floatArrayOf(0f, 0f, 0f, 0f)
     )
   )
     private set
 
-  private var cameraAngle: Double = 0.0
+  private var cameraPanAngle: Float = 0f
+  private var cameraTiltAngle: Float = Math.PI.toFloat() / 8f
   private var cameraFov: Float = 75.0f
-  private var cameraHeight: Double = 500.0
+  private var cameraDistance: Float = 500f
 
-  fun changeCameraAngle(angle: Double) {
-    cameraAngle += angle
+  fun changeCameraPanAngle(angle: Float) {
+    cameraPanAngle += angle
   }
 
-  fun changeCameraHeight(height: Double) {
-    cameraHeight += height
+  fun changeCameraTiltAngle(angle: Float) {
+    cameraTiltAngle += angle
+  }
+
+  fun changeCameraDistance(distance: Float) {
+    cameraDistance += distance
   }
 
   fun changeCameraFov(increase: Float) {
@@ -48,21 +59,23 @@ object Camera {
 
   fun update(timeElapsed: Long) {
 //    cameraFov = sin(System.currentTimeMillis() / 1000.0) * 15.0 + 75.0
-    cameraShift = doubleArrayOf(0.0, cameraHeight, 250.0)
+    cameraShift = Vector3(0f, cameraDistance, cameraDistance)
     cameraTarget = Player.worldCoordinates
-    cameraPosition = cameraTarget.plus(cameraShift.rotateYAxis(cameraAngle))
-    cameraDirection = cameraTarget.minus(cameraPosition).normalizeVector()
-    cameraRight = doubleArrayOf(0.0, 1.0, 0.0).cross(cameraDirection).normalizeVector()
-    cameraUp = cameraDirection.cross(cameraRight).normalizeVector()
+    cameraShift = cameraShift.rotateYAxis(cameraPanAngle)
+//    cameraShift = cameraShift.rotateXAxis(cameraTiltAngle)
+    cameraPosition = cameraTarget.plus(cameraShift)
+    cameraFacingVector = cameraTarget.minus(cameraPosition).normalized()
+    cameraRight = Vector3(0f, 1f, 0f).cross(cameraFacingVector).normalized()
+    cameraUp = cameraFacingVector.cross(cameraRight).normalized()
 
 //    val followSpeed = 0.0015 * zoom
 //    var cameraVelocityVector = goal.minus(cameraPosition)
 //    val cameraSpeed = cameraVelocityVector.module() * followSpeed * timeElapsed
 //    cameraVelocityVector = cameraVelocityVector.normalizeVector().multiplyByFactor(cameraSpeed)
-//    cameraPosition = Player.worldCoordinates.plus(doubleArrayOf(0.0, 100.0, 100.0))
+//    cameraPosition = entities.Player.worldCoordinates.plus(floatArrayOf(0f, 100.0, 100.0))
 
-    viewMatrix = makeViewMatrix()
-    perspectiveMatrix = makePerspectiveMatrix(
+    viewMatrix = Matrix.makeViewMatrix(cameraPosition, cameraFacingVector, cameraUp)
+    perspectiveMatrix = Matrix.makePerspectiveMatrix(
       fov = cameraFov,
       aspect = Window.resolution.height.toFloat() / Window.resolution.width.toFloat(),
       near = 0.1f,
@@ -78,11 +91,11 @@ object Camera {
     if (timeElapsedSinceLastPrint > 5000L) {
       timeElapsedSinceLastPrint = 0L
       println("Vectors updated")
-      println("cameraPosition: ${cameraPosition.print()}")
-      println("cameraTarget: ${cameraTarget.print()}")
-      println("cameraDirection: ${cameraDirection.print()}")
-      println("cameraRight: ${cameraRight.print()}")
-      println("cameraUp: ${cameraUp.print()}")
+      println("cameraPosition: $cameraPosition")
+      println("cameraTarget: $cameraTarget")
+      println("cameraDirection: $cameraFacingVector")
+      println("cameraRight: $cameraRight")
+      println("cameraUp: $cameraUp")
     }
   }
 }

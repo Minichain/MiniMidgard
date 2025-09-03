@@ -1,3 +1,5 @@
+package sound
+
 import org.lwjgl.BufferUtils
 import org.lwjgl.openal.AL
 import org.lwjgl.openal.AL10
@@ -11,8 +13,6 @@ import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryStack.stackPop
 import org.lwjgl.system.MemoryStack.stackPush
 import org.lwjgl.system.libc.LibCStdlib
-import sound.Sound
-import sound.SoundType
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
@@ -48,7 +48,7 @@ object SoundManager {
         val alCapabilities = AL.createCapabilities(alcCapabilities)
 
         if (alCapabilities.OpenAL10) {
-          //OpenAL 1.0 is supported
+          //OpenAL 1f is supported
         }
 
         loadSounds()

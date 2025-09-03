@@ -1,6 +1,7 @@
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.glfw.GLFW.GLFW_MOD_SHIFT
 import org.lwjgl.glfw.GLFW.GLFW_PRESS
+import org.lwjgl.glfw.GLFW.GLFW_RELEASE
 import org.lwjgl.glfw.GLFW.GLFW_REPEAT
 import org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback
 import org.lwjgl.glfw.GLFW.glfwSetKeyCallback
@@ -49,13 +50,15 @@ object InputListener {
 
   private var scrollCallback: GLFWScrollCallback = object : GLFWScrollCallback() {
     override fun invoke(window: Long, p1: Double, p2: Double) {
-      if (p2 > 0.0) Camera.changeCameraFov(-1.0f)
-      else Camera.changeCameraFov(1.0f)
+      if (p2 > 0f) Camera.changeCameraDistance(-10.0f)
+      else Camera.changeCameraDistance(10.0f)
     }
   }
 
-  var mouseRightButtonHold = false
-  var mouseRightButtonPlusShiftHold = false
+  private var mouseRightButtonHold = false
+  private var mouseRightButtonPlusShiftHold = false
+  private var lastXMousePosition: Float? = null
+  private var lastYMousePosition: Float? = null
 
   private var mouseCallback: GLFWMouseButtonCallback = object : GLFWMouseButtonCallback() {
     override fun invoke(window: Long, button: Int, action: Int, mods: Int) {
@@ -64,26 +67,27 @@ object InputListener {
           if (mods == GLFW_MOD_SHIFT) {
             println("mouseRightButtonPlusShiftHold")
             mouseRightButtonPlusShiftHold = action == GLFW_PRESS || action == GLFW_REPEAT
+            if (action == GLFW_RELEASE) lastYMousePosition = null
           } else {
             mouseRightButtonHold = action == GLFW_PRESS || action == GLFW_REPEAT
+            if (action == GLFW_RELEASE) lastXMousePosition = null
           }
         }
       }
     }
   }
 
-  private var lastXMousePosition = 0.0
-  private var lastYMousePosition = 0.0
-
   private var cursorPosCallback: GLFWCursorPosCallback = object : GLFWCursorPosCallback() {
     override fun invoke(window: Long, x: Double, y: Double) {
       if (mouseRightButtonHold) {
-        Camera.changeCameraAngle(0.01 * (lastXMousePosition - x))
-        lastXMousePosition = x
+        if (lastXMousePosition == null) lastXMousePosition = x.toFloat()
+        Camera.changeCameraPanAngle(0.01f * (lastXMousePosition!! - x.toFloat()))
+        lastXMousePosition = x.toFloat()
       }
       if (mouseRightButtonPlusShiftHold) {
-        Camera.changeCameraHeight(-1 * (lastYMousePosition - y))
-        lastYMousePosition = y
+        if (lastYMousePosition == null) lastYMousePosition = y.toFloat()
+        Camera.changeCameraTiltAngle(0.01f * (lastYMousePosition!! - y.toFloat()))
+        lastYMousePosition = y.toFloat()
       }
     }
   }

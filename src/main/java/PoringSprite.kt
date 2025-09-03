@@ -1,3 +1,4 @@
+import entities.Poring
 
 class PoringSprite : Sprite() {
 
@@ -71,7 +72,7 @@ class PoringSprite : Sprite() {
       Poring.EnemyState.Walking -> State.Walking
     }
 
-  fun render(coordinates: DoubleArray, enemyState: Poring.EnemyState, frameIteration: Int, orientation: Orientation) {
+  fun render(coordinates: Vector3, enemyState: Poring.EnemyState, frameIteration: Int, orientation: Orientation) {
 
     val spriteOrientation = when (orientation) {
       Orientation.Up,
@@ -99,26 +100,13 @@ class PoringSprite : Sprite() {
     val spriteWidth = getSpriteWidth(spriteAnimation, spriteOrientation)
     val spriteHeight = getSpriteHeight(spriteAnimation)
 
-    val vertex1 = coordinates
-      .plus(Camera.cameraUp.multiplyByFactor(spriteHeight.toDouble() / 2.0))
-      .plus(Camera.cameraRight.multiplyByFactor(spriteWidth.toDouble() / 2.0))
-      .toCameraCoordinates()
-      .multiplyByFactor(1.0 / 720.0).toFloatArray()
-    val vertex2 = coordinates
-      .plus(Camera.cameraUp.multiplyByFactor(-spriteHeight.toDouble() / 2.0))
-      .plus(Camera.cameraRight.multiplyByFactor(spriteWidth.toDouble() / 2.0))
-      .toCameraCoordinates()
-      .multiplyByFactor(1.0 / 720.0).toFloatArray()
-    val vertex3 = coordinates
-      .plus(Camera.cameraUp.multiplyByFactor(-spriteHeight.toDouble() / 2.0))
-      .plus(Camera.cameraRight.multiplyByFactor(-spriteWidth.toDouble() / 2.0))
-      .toCameraCoordinates()
-      .multiplyByFactor(1.0 / 720.0).toFloatArray()
-    val vertex4 = coordinates
-      .plus(Camera.cameraUp.multiplyByFactor(spriteHeight.toDouble() / 2.0))
-      .plus(Camera.cameraRight.multiplyByFactor(-spriteWidth.toDouble() / 2.0))
-      .toCameraCoordinates()
-      .multiplyByFactor(1.0 / 720.0).toFloatArray()
+    val upVector = Vector3(0f, 1f, 0f).multiplyByFactor(spriteHeight.toFloat())
+    val rightVector = Vector3(1f, 0f, 0f).multiplyByFactor(spriteWidth.toFloat() / 2f)
+
+    val vertex1 = (coordinates + upVector + rightVector).multiplyByFactor(1f / Window.resolution.height.toFloat())
+    val vertex2 = (coordinates + rightVector).multiplyByFactor(1f / Window.resolution.height.toFloat())
+    val vertex3 = (coordinates - rightVector).multiplyByFactor(1f / Window.resolution.height.toFloat())
+    val vertex4 = (coordinates + upVector - rightVector).multiplyByFactor(1f / Window.resolution.height.toFloat())
 
     if (flipTextureYAxis) {
       GraphicsManager.render(spriteSheet, vertex1, vertex2, vertex3, vertex4, u2, v1, u1, v2)

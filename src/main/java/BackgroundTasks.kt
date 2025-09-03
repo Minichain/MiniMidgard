@@ -18,7 +18,7 @@ private fun CoroutineScope.runTask01() {
     var iteration = 0
     while (true) {
       println("TASK 01 This is running on a thread... iteration: $iteration")
-//      println("Sending player coordinates. ${Player.worldCoordinates.print()}")
+//      println("Sending player coordinates. ${entities.Player.worldCoordinates.print()}")
       delay(1000)
       iteration++
     }

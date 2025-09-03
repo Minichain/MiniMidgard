@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL30.glGenVertexArrays
 object GraphicsManager {
 
   private var programShader01: Int = 0
+  private var programShader02: Int = 0
 
   var gpuCalls: Int = 0
     private set
@@ -24,8 +25,10 @@ object GraphicsManager {
 
   fun prepareOpenGL() {
     GL.createCapabilities()
-    //Load shaders
     programShader01 = loadShader("shader01")
+    programShader02 = loadShader("shader02")
+    println("OpenGL renderer: ${glGetString(GL_RENDERER)}")
+    println("OpenGL vendor: ${glGetString(GL_VENDOR)}")
     println("OpenGL version: ${glGetString(GL_VERSION)}")
   }
 
@@ -95,6 +98,11 @@ object GraphicsManager {
   }
 
   fun updateShadersUniforms() {
+    updateShader01Uniforms()
+    updateShader02Uniforms()
+  }
+
+  private fun updateShader01Uniforms() {
     val windowWidthUniform = glGetUniformLocation(programShader01, "windowWidth")
     val windowHeightUniform = glGetUniformLocation(programShader01, "windowHeight")
     val perspectiveMatrixUniform = glGetUniformLocation(programShader01, "perspectiveMatrix")
@@ -107,9 +115,21 @@ object GraphicsManager {
     glUniform1i(textureUniform01, 0)
   }
 
+  private fun updateShader02Uniforms() {
+    val windowWidthUniform = glGetUniformLocation(programShader02, "windowWidth")
+    val windowHeightUniform = glGetUniformLocation(programShader02, "windowHeight")
+    val textureUniform01 = glGetUniformLocation(programShader02, "ourTexture")
+
+    glUseProgram(programShader02)
+    glUniform1f(windowWidthUniform, Window.resolution.width.toFloat())
+    glUniform1f(windowHeightUniform, Window.resolution.height.toFloat())
+    glUniform1i(textureUniform01, 0)
+  }
+
   fun useShader(shader: Int) {
     when (shader) {
       1 -> glUseProgram(programShader01)
+      2 -> glUseProgram(programShader02)
       else -> glUseProgram(0)
     }
   }
@@ -122,28 +142,28 @@ object GraphicsManager {
     glGetProgramInfoLog(obj, glGetProgrami(obj, GL_INFO_LOG_LENGTH))
 
   fun render(
-    sprite: Texture,
-    vertex1: FloatArray,
-    vertex2: FloatArray,
-    vertex3: FloatArray,
-    vertex4: FloatArray,
+    texture: Texture,
+    vertex1: Vector3,
+    vertex2: Vector3,
+    vertex3: Vector3,
+    vertex4: Vector3,
     u1: Float, v1: Float,
     u2: Float, v2: Float
   ) {
     val vertices: FloatArray = floatArrayOf(
-      vertex1[0], vertex1[1], vertex1[2],
+      vertex1.x, vertex1.y, vertex1.z,
       1f, 1f, 1f,
       u2, v2,
 
-      vertex2[0], vertex2[1], vertex2[2],
+      vertex2.x, vertex2.y, vertex2.z,
       1f, 1f, 1f,
       u2, v1,
 
-      vertex3[0], vertex3[1], vertex3[2],
+      vertex3.x, vertex3.y, vertex3.z,
       1f, 1f, 1f,
       u1, v1,
 
-      vertex4[0], vertex4[1], vertex4[2],
+      vertex4.x, vertex4.y, vertex4.z,
       1f, 1f, 1f,
       u1, v2
     )
@@ -174,7 +194,7 @@ object GraphicsManager {
     glBindVertexArray(0)
 
     glActiveTexture(GL_TEXTURE0)
-    sprite.bind()
+    texture.bind()
     glBindVertexArray(vao)
     glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)
 

@@ -10,17 +10,17 @@ data class Tile(
     private val sprite: Texture = Texture.loadTexture("src/main/resources/textures/grass_01.png")
   }
 
-  private val worldCoordinates: Array<DoubleArray>
-  private var cameraCoordinates: Array<DoubleArray>
+  private val worldCoordinates: Array<Vector3>
+  private var cameraCoordinates: Array<Vector3>
 
   init {
-    val centerX = i.toDouble() * width.toDouble()
-    val centerZ = j.toDouble() * height.toDouble()
+    val centerX = i.toFloat() * width.toFloat()
+    val centerZ = j.toFloat() * height.toFloat()
     worldCoordinates = arrayOf(
-      doubleArrayOf(centerX + width.toDouble() / 2.0, 0.0, centerZ - height.toDouble()),
-      doubleArrayOf(centerX + width.toDouble() / 2.0, 0.0, centerZ + height.toDouble()),
-      doubleArrayOf(centerX - width.toDouble() / 2.0, 0.0, centerZ + height.toDouble()),
-      doubleArrayOf(centerX - width.toDouble() / 2.0, 0.0, centerZ - height.toDouble())
+      Vector3(centerX + width.toFloat() / 2f, 0f, centerZ - height.toFloat() / 2f),
+      Vector3(centerX + width.toFloat() / 2f, 0f, centerZ + height.toFloat() / 2f),
+      Vector3(centerX - width.toFloat() / 2f, 0f, centerZ + height.toFloat() / 2f),
+      Vector3(centerX - width.toFloat() / 2f, 0f, centerZ - height.toFloat() / 2f)
     )
     cameraCoordinates = arrayOf(
       worldCoordinates[0].toCameraCoordinates(),
@@ -46,10 +46,10 @@ data class Tile(
     val v1 = 0f
     val u2 = 1f
 
-    val vertex1 = cameraCoordinates[0].multiplyByFactor(1.0 / 720.0).toFloatArray()
-    val vertex2 = cameraCoordinates[1].multiplyByFactor(1.0 / 720.0).toFloatArray()
-    val vertex3 = cameraCoordinates[2].multiplyByFactor(1.0 / 720.0).toFloatArray()
-    val vertex4 = cameraCoordinates[3].multiplyByFactor(1.0 / 720.0).toFloatArray()
+    val vertex1 = cameraCoordinates[0].multiplyByFactor(1f / Window.resolution.height.toFloat())
+    val vertex2 = cameraCoordinates[1].multiplyByFactor(1f / Window.resolution.height.toFloat())
+    val vertex3 = cameraCoordinates[2].multiplyByFactor(1f / Window.resolution.height.toFloat())
+    val vertex4 = cameraCoordinates[3].multiplyByFactor(1f / Window.resolution.height.toFloat())
 
     GraphicsManager.render(sprite, vertex1, vertex2, vertex3, vertex4, u1, v1, u2, v2)
 

@@ -1,8 +1,12 @@
+package entities
+
+import Vector3
+
 abstract class Entity(
-  var worldCoordinates: DoubleArray
+  var worldCoordinates: Vector3
 ) {
 
-  var cameraCoordinates: DoubleArray = worldCoordinates.toCameraCoordinates()
+  var cameraCoordinates: Vector3 = worldCoordinates.toCameraCoordinates()
   var frameIteration: Float = Math.random().toFloat() * 10f
 
   open fun update(timeElapsedMillis: Long) {
@@ -11,4 +15,8 @@ abstract class Entity(
   }
 
   abstract fun render()
+
+  open fun isCloseToCamera(): Boolean {
+    return cameraCoordinates.module() < 2000f
+  }
 }
