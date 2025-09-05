@@ -27,11 +27,14 @@ data object Player : Entity(Vector3(0f, 0f, 0f)) {
 
     movementVector = Vector3(0f, 0f, 0f)
 
+    val cameraFacingVector2d = Vector3(Camera.cameraFacingVector.x, 0f, Camera.cameraFacingVector.z).normalized()
+    val cameraFacingVectorLeft2d = Vector3(Camera.cameraFacingVector.z, 0f, -Camera.cameraFacingVector.x).normalized()
+
     if (!InputListener.sitting) {
-      if (InputListener.movingUp) movementVector.values[2] -= 1f
-      if (InputListener.movingLeft) movementVector.values[0] -= 1f
-      if (InputListener.movingDown) movementVector.values[2] += 1f
-      if (InputListener.movingRight) movementVector.values[0] += 1f
+      if (InputListener.movingUp) movementVector += cameraFacingVector2d
+      if (InputListener.movingLeft) movementVector += cameraFacingVectorLeft2d
+      if (InputListener.movingDown) movementVector -= cameraFacingVector2d
+      if (InputListener.movingRight) movementVector -= cameraFacingVectorLeft2d
     }
 
     movementVector = movementVector.normalized()

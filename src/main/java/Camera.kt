@@ -3,15 +3,15 @@ import entities.Player
 object Camera {
 
   private var cameraShift = Vector3(0f, 10f, 10f)
-  var cameraPosition = Vector3(0f, 0f, 0f).plus(cameraShift)
+  var cameraPosition = Vector3().plus(cameraShift)
     private set
-  var cameraTarget = Vector3(0f, 0f, 0f)
+  var cameraTarget = Vector3()
     private set
-  var cameraFacingVector = Vector3(0f, 0f, 0f)
+  var cameraFacingVector = Vector3()
     private set
-  var cameraRight = Vector3(0f, 0f, 0f)
+  var cameraRight = Vector3()
     private set
-  var cameraUp = Vector3(0f, 0f, 0f)
+  var cameraUp = Vector3()
     private set
   var viewMatrix: Matrix = Matrix(
     rows = 4,
@@ -24,16 +24,7 @@ object Camera {
     )
   )
     private set
-  var perspectiveMatrix: Matrix = Matrix(
-    rows = 4,
-    columns = 4,
-    values = arrayOf(
-      floatArrayOf(0f, 0f, 0f, 0f),
-      floatArrayOf(0f, 0f, 0f, 0f),
-      floatArrayOf(0f, 0f, 0f, 0f),
-      floatArrayOf(0f, 0f, 0f, 0f)
-    )
-  )
+  var perspectiveMatrix: Matrix4x4 = Matrix4x4()
     private set
 
   private var cameraPanAngle: Float = 0f

@@ -36,6 +36,7 @@ object Game {
 
     //Debug text
     GraphicsManager.useShader(2)
+    TextRendering.renderText(-250f, -100f, "Mouse coordinates: ${InputListener.currentMouseCoordinates}", 4f)
     TextRendering.renderText(-250f, -50f, "FPS: $fps", 4f)
     TextRendering.renderText(-250f, 0f, "Entities: ${EntityManager.entities.size}", 4f)
     TextRendering.renderText(-250f, 50f, "Player world coordinates: ${Player.worldCoordinates}", 4f)

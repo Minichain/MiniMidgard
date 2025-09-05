@@ -6,7 +6,7 @@ object EntityManager {
 
   fun loadEntities() {
     entities.add(Player)
-    val amountOfEnemies = 500
+    val amountOfEnemies = 100
     for (i in 0 until amountOfEnemies) {
       entities.add(Poring())
     }

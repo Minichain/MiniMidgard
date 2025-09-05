@@ -14,6 +14,9 @@ import org.lwjgl.glfw.GLFWScrollCallback
 
 object InputListener {
 
+  var currentMouseCoordinates: Vector2 = Vector2()
+    private set
+
   //TODO This is here for testing purposes. Remove later.
   var movingUp: Boolean = false
   var movingDown: Boolean = false
@@ -57,20 +60,23 @@ object InputListener {
 
   private var mouseRightButtonHold = false
   private var mouseRightButtonPlusShiftHold = false
-  private var lastXMousePosition: Float? = null
-  private var lastYMousePosition: Float? = null
+  private var cameraPanningLastXMousePosition: Float? = null
+  private var cameraTiltLastYMousePosition: Float? = null
 
   private var mouseCallback: GLFWMouseButtonCallback = object : GLFWMouseButtonCallback() {
     override fun invoke(window: Long, button: Int, action: Int, mods: Int) {
       when (button) {
+        GLFW.GLFW_MOUSE_BUTTON_LEFT -> {
+
+        }
         GLFW.GLFW_MOUSE_BUTTON_RIGHT -> {
           if (mods == GLFW_MOD_SHIFT) {
             println("mouseRightButtonPlusShiftHold")
             mouseRightButtonPlusShiftHold = action == GLFW_PRESS || action == GLFW_REPEAT
-            if (action == GLFW_RELEASE) lastYMousePosition = null
+            if (action == GLFW_RELEASE) cameraTiltLastYMousePosition = null
           } else {
             mouseRightButtonHold = action == GLFW_PRESS || action == GLFW_REPEAT
-            if (action == GLFW_RELEASE) lastXMousePosition = null
+            if (action == GLFW_RELEASE) cameraPanningLastXMousePosition = null
           }
         }
       }
@@ -79,15 +85,16 @@ object InputListener {
 
   private var cursorPosCallback: GLFWCursorPosCallback = object : GLFWCursorPosCallback() {
     override fun invoke(window: Long, x: Double, y: Double) {
+      currentMouseCoordinates = Vector2(x.toFloat(), y.toFloat())
       if (mouseRightButtonHold) {
-        if (lastXMousePosition == null) lastXMousePosition = x.toFloat()
-        Camera.changeCameraPanAngle(0.01f * (lastXMousePosition!! - x.toFloat()))
-        lastXMousePosition = x.toFloat()
+        if (cameraPanningLastXMousePosition == null) cameraPanningLastXMousePosition = x.toFloat()
+        Camera.changeCameraPanAngle(0.01f * (cameraPanningLastXMousePosition!! - x.toFloat()))
+        cameraPanningLastXMousePosition = x.toFloat()
       }
       if (mouseRightButtonPlusShiftHold) {
-        if (lastYMousePosition == null) lastYMousePosition = y.toFloat()
-        Camera.changeCameraTiltAngle(0.01f * (lastYMousePosition!! - y.toFloat()))
-        lastYMousePosition = y.toFloat()
+        if (cameraTiltLastYMousePosition == null) cameraTiltLastYMousePosition = y.toFloat()
+        Camera.changeCameraTiltAngle(0.01f * (cameraTiltLastYMousePosition!! - y.toFloat()))
+        cameraTiltLastYMousePosition = y.toFloat()
       }
     }
   }

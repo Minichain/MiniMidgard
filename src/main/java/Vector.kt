@@ -12,7 +12,7 @@ abstract class Vector {
 
 }
 
-class Vector2(x: Float, y: Float) : Vector() {
+class Vector2(x: Float = 0f, y: Float = 0f) : Vector() {
 
   override var values: FloatArray = floatArrayOf(x, y)
   val x get() = values[0]
@@ -57,7 +57,7 @@ class Vector2(x: Float, y: Float) : Vector() {
   }
 }
 
-class Vector3(x: Float, y: Float, z: Float) : Vector() {
+class Vector3(x: Float = 0f, y: Float = 0f, z: Float = 0f) : Vector() {
 
   override var values: FloatArray = floatArrayOf(x, y, z)
   val x get() = values[0]
@@ -140,7 +140,7 @@ class Vector3(x: Float, y: Float, z: Float) : Vector() {
   }
 }
 
-class Vector4(x: Float, y: Float, z: Float, k: Float) : Vector() {
+class Vector4(x: Float = 0f, y: Float = 0f, z: Float = 0f, k: Float = 0f) : Vector() {
 
   override var values: FloatArray = floatArrayOf(x, y, z, k)
   val x get() = values[0]
