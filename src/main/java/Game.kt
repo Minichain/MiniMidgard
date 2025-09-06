@@ -8,7 +8,7 @@ import ui.TextRendering
 
 object Game {
 
-  private var fps: Float = 0f
+  private var fps: Double = 0.0
 
   fun startGame() {
     println("Starting game...")
@@ -18,7 +18,7 @@ object Game {
   }
 
   fun update(timeElapsedMillis: Long) {
-    fps = 1000f / timeElapsedMillis.toFloat()
+    fps = 1000.0 / timeElapsedMillis
     Camera.update(timeElapsedMillis)
     EntityManager.updateEntities(timeElapsedMillis)
     Scene.update(timeElapsedMillis)
@@ -37,7 +37,7 @@ object Game {
     //Debug text
     GraphicsManager.useShader(2)
     TextRendering.renderText(-250f, -100f, "Mouse coordinates: ${InputListener.currentMouseCoordinates}", 4f)
-    TextRendering.renderText(-250f, -50f, "FPS: $fps", 4f)
+    TextRendering.renderText(-250f, -50f, "FPS: ${String.format("%.2f", fps)}", 4f)
     TextRendering.renderText(-250f, 0f, "Entities: ${EntityManager.entities.size}", 4f)
     TextRendering.renderText(-250f, 50f, "Player world coordinates: ${Player.worldCoordinates}", 4f)
     TextRendering.renderText(-250f, 100f, "Camera world coordinates: ${Camera.cameraPosition}", 4f)

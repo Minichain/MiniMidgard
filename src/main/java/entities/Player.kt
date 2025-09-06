@@ -20,6 +20,7 @@ data object Player : Entity(Vector3(0f, 0f, 0f)) {
   private var movementVector = Vector3(0f, 0f, 0f)
   private var facingVector = Vector3(0f, 0f, 1f)
   private var orientation: Orientation = Orientation.Down
+  private var moveToTargetPin: Vector3? = null
 
   override fun update(timeElapsedMillis: Long) {
     val speed = 0.2f
@@ -74,6 +75,18 @@ data object Player : Entity(Vector3(0f, 0f, 0f)) {
       Vector3(cameraCoordinates.x, cameraCoordinates.y + 60, cameraCoordinates.z + 1),
       orientation
     )
+
+    moveToTargetPin?.toCameraCoordinates()?.let {
+      headSprite.render(
+        it,
+        orientation
+      )
+    }
+
+  }
+
+  fun setMoveToTargetPin(pin: Vector3) {
+    moveToTargetPin = pin
   }
 
   //TODO Debug
@@ -82,8 +95,7 @@ data object Player : Entity(Vector3(0f, 0f, 0f)) {
     timeElapsedSinceLastPrint += timeElapsed
     if (timeElapsedSinceLastPrint > 5000L) {
       timeElapsedSinceLastPrint = 0L
-//      println("Vectors updated")
-//      println("movementVector: $movementVector")
+      println("Player moveToTargetPin: $moveToTargetPin")
     }
   }
 }

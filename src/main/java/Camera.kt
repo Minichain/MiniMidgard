@@ -3,7 +3,7 @@ import entities.Player
 object Camera {
 
   private var cameraShift = Vector3(0f, 10f, 10f)
-  var cameraPosition = Vector3().plus(cameraShift)
+  var cameraPosition = Vector3() + cameraShift
     private set
   var cameraTarget = Vector3()
     private set
@@ -13,9 +13,7 @@ object Camera {
     private set
   var cameraUp = Vector3()
     private set
-  var viewMatrix: Matrix = Matrix(
-    rows = 4,
-    columns = 4,
+  var viewMatrix: Matrix4x4 = Matrix4x4(
     values = arrayOf(
       floatArrayOf(0f, 0f, 0f, 0f),
       floatArrayOf(0f, 0f, 0f, 0f),
@@ -70,7 +68,7 @@ object Camera {
       fov = cameraFov,
       aspect = Window.resolution.height.toFloat() / Window.resolution.width.toFloat(),
       near = 0.1f,
-      far = 1000.0f
+      far = 10.0f
     )
     printVectors(timeElapsed)
   }

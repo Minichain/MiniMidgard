@@ -1,3 +1,4 @@
+import entities.Player
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.glfw.GLFW.GLFW_MOD_SHIFT
 import org.lwjgl.glfw.GLFW.GLFW_PRESS
@@ -67,7 +68,21 @@ object InputListener {
     override fun invoke(window: Long, button: Int, action: Int, mods: Int) {
       when (button) {
         GLFW.GLFW_MOUSE_BUTTON_LEFT -> {
-
+          if (action == GLFW_PRESS) {
+            val maxIterations = 1000
+            var iteration = 0
+            var ray = Camera.cameraPosition -
+                    Camera.cameraRight.multiplyByFactor(currentMouseCoordinates.x) +
+                    Camera.cameraRight.multiplyByFactor(Window.resolution.width.toFloat() / 2f) -
+                    Camera.cameraUp.multiplyByFactor(currentMouseCoordinates.y) +
+                    Camera.cameraUp.multiplyByFactor(Window.resolution.height.toFloat() / 2f)
+            val direction = Camera.cameraFacingVector.multiplyByPerspectiveInvMatrix()
+            while (ray.y >= 0f && iteration < maxIterations) {
+              ray += direction
+              iteration++
+            }
+            Player.setMoveToTargetPin(ray)
+          }
         }
         GLFW.GLFW_MOUSE_BUTTON_RIGHT -> {
           if (mods == GLFW_MOD_SHIFT) {

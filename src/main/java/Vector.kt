@@ -91,12 +91,16 @@ class Vector3(x: Float = 0f, y: Float = 0f, z: Float = 0f) : Vector() {
   fun dot(vector: Vector3): Float =
     x * vector.x + y * vector.y + z * vector.z
 
-  fun toCameraCoordinates(): Vector3 =
-    Vector3(
-      Camera.viewMatrix.values[0][0] * x + Camera.viewMatrix.values[1][0] * y + Camera.viewMatrix.values[2][0] * z + Camera.viewMatrix.values[3][0] * 1f,
-      Camera.viewMatrix.values[0][1] * x + Camera.viewMatrix.values[1][1] * y + Camera.viewMatrix.values[2][1] * z + Camera.viewMatrix.values[3][1] * 1f,
-      Camera.viewMatrix.values[0][2] * x + Camera.viewMatrix.values[1][2] * y + Camera.viewMatrix.values[2][2] * z + Camera.viewMatrix.values[3][2] * 1f
-    )
+  fun toCameraCoordinates(): Vector3 {
+    val vec4 = Vector4(x, y, z, 1f).toCameraCoordinates()
+    return Vector3(vec4.x, vec4.y, vec4.z)
+  }
+
+  fun multiplyByPerspectiveInvMatrix(): Vector3 {
+    val perspectiveMatrixInv = Camera.perspectiveMatrix.inv()
+    val vec4 = Vector4(x, y, z, 1f) * perspectiveMatrixInv
+    return Vector3(vec4.x, vec4.y, vec4.z)
+  }
 
   fun cross(coordinates: Vector3): Vector3 =
     Vector3(
@@ -151,13 +155,43 @@ class Vector4(x: Float = 0f, y: Float = 0f, z: Float = 0f, k: Float = 0f) : Vect
   fun module(): Float =
     sqrt(x.pow(2f) + y.pow(2f) + z.pow(2f) + k.pow(2f))
 
+  fun normalized(): Vector4 {
+    val module = module()
+    return if (module > 0f) {
+      Vector4(x / module, y / module, z / module, k / module)
+    } else {
+      this
+    }
+  }
+
+  operator fun unaryMinus(): Vector4 =
+    Vector4(-x, -y, -z, -k)
+
+  operator fun minus(vector: Vector4): Vector4 =
+    Vector4(x - vector.x, y - vector.y, z - vector.z, k - vector.k)
+
+  operator fun plus(vector: Vector4): Vector4 =
+    Vector4(x + vector.x, y + vector.y, z + vector.z, k + vector.k)
+
+  operator fun times(matrix4x4: Matrix4x4): Vector4 {
+    var x = 0f; var y = 0f; var z = 0f; var k = 0f
+    for (i in 0 until 4) {
+      x += matrix4x4.values[i][0] * values[i]
+      y += matrix4x4.values[i][1] * values[i]
+      z += matrix4x4.values[i][2] * values[i]
+      k += matrix4x4.values[i][3] * values[i]
+    }
+    return Vector4(x, y, z, k)
+  }
+
+  fun multiplyByFactor(factor: Float): Vector4 =
+    Vector4(x * factor, y * factor, z * factor, k * factor)
+
+  fun dot(vector: Vector4): Float =
+    x * vector.x + y * vector.y + z * vector.z + k * vector.k
+
   fun toCameraCoordinates(): Vector4 =
-    Vector4(
-      Camera.viewMatrix.values[0][0] * x + Camera.viewMatrix.values[1][0] * y + Camera.viewMatrix.values[2][0] * z + Camera.viewMatrix.values[3][0] * 1f,
-      Camera.viewMatrix.values[0][1] * x + Camera.viewMatrix.values[1][1] * y + Camera.viewMatrix.values[2][1] * z + Camera.viewMatrix.values[3][1] * 1f,
-      Camera.viewMatrix.values[0][2] * x + Camera.viewMatrix.values[1][2] * y + Camera.viewMatrix.values[2][2] * z + Camera.viewMatrix.values[3][2] * 1f,
-      Camera.viewMatrix.values[0][3] * x + Camera.viewMatrix.values[1][3] * y + Camera.viewMatrix.values[2][3] * z + Camera.viewMatrix.values[3][3] * 1f
-    )
+    this * Camera.viewMatrix
 
   companion object {
     fun random(
