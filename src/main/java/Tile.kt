@@ -46,10 +46,10 @@ data class Tile(
     val v1 = 0f
     val u2 = 1f
 
-    val vertex1 = cameraCoordinates[0].multiplyByFactor(1f / Window.resolution.height.toFloat())
-    val vertex2 = cameraCoordinates[1].multiplyByFactor(1f / Window.resolution.height.toFloat())
-    val vertex3 = cameraCoordinates[2].multiplyByFactor(1f / Window.resolution.height.toFloat())
-    val vertex4 = cameraCoordinates[3].multiplyByFactor(1f / Window.resolution.height.toFloat())
+    val vertex1 = cameraCoordinates[0] * (1f / Window.resolution.height.toFloat())
+    val vertex2 = cameraCoordinates[1] * (1f / Window.resolution.height.toFloat())
+    val vertex3 = cameraCoordinates[2] * (1f / Window.resolution.height.toFloat())
+    val vertex4 = cameraCoordinates[3] * (1f / Window.resolution.height.toFloat())
 
     GraphicsManager.render(sprite, vertex1, vertex2, vertex3, vertex4, u1, v1, u2, v2)
 

@@ -18,6 +18,7 @@ data object Player : Entity(Vector3(0f, 0f, 0f)) {
   private val bodySprite = BodyMaleNoviceSprite()
   private val headSprite = HeadMaleSprite()
   private var movementVector = Vector3(0f, 0f, 0f)
+  fun isMoving(): Boolean = movementVector.module() > 0f
   private var facingVector = Vector3(0f, 0f, 1f)
   private var orientation: Orientation = Orientation.Down
   private var moveToTargetPin: Vector3? = null
@@ -38,12 +39,18 @@ data object Player : Entity(Vector3(0f, 0f, 0f)) {
       if (InputListener.movingRight) movementVector -= cameraFacingVectorLeft2d
     }
 
+    if (!isMoving()) {
+      moveToTargetPin?.let { moveToTargetPin ->
+        movementVector = moveToTargetPin - worldCoordinates
+        if (movementVector.module() < 10f) movementVector = Vector3()
+      }
+    }
+
     movementVector = movementVector.normalized()
-    val isMoving = movementVector.module() > 0
-    if (isMoving) {
+    if (isMoving()) {
       facingVector = movementVector
     }
-    state = if (isMoving) {
+    state = if (isMoving()) {
       PlayerState.Walking
     } else {
       if (InputListener.sitting) {

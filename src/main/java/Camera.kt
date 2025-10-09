@@ -60,7 +60,7 @@ object Camera {
 //    val followSpeed = 0.0015 * zoom
 //    var cameraVelocityVector = goal.minus(cameraPosition)
 //    val cameraSpeed = cameraVelocityVector.module() * followSpeed * timeElapsed
-//    cameraVelocityVector = cameraVelocityVector.normalizeVector().multiplyByFactor(cameraSpeed)
+//    cameraVelocityVector = cameraVelocityVector.normalizeVector() * (cameraSpeed)
 //    cameraPosition = entities.Player.worldCoordinates.plus(floatArrayOf(0f, 100.0, 100.0))
 
     viewMatrix = Matrix.makeViewMatrix(cameraPosition, cameraFacingVector, cameraUp)

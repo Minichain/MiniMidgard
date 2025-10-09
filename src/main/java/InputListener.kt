@@ -69,19 +69,12 @@ object InputListener {
       when (button) {
         GLFW.GLFW_MOUSE_BUTTON_LEFT -> {
           if (action == GLFW_PRESS) {
-            val maxIterations = 1000
-            var iteration = 0
-            var ray = Camera.cameraPosition -
-                    Camera.cameraRight.multiplyByFactor(currentMouseCoordinates.x) +
-                    Camera.cameraRight.multiplyByFactor(Window.resolution.width.toFloat() / 2f) -
-                    Camera.cameraUp.multiplyByFactor(currentMouseCoordinates.y) +
-                    Camera.cameraUp.multiplyByFactor(Window.resolution.height.toFloat() / 2f)
-            val direction = Camera.cameraFacingVector.multiplyByPerspectiveInvMatrix()
-            while (ray.y >= 0f && iteration < maxIterations) {
-              ray += direction
-              iteration++
-            }
-            Player.setMoveToTargetPin(ray)
+            val xShift = Camera.cameraRight * (currentMouseCoordinates.x - Window.resolution.width.toFloat() / 2f)
+            var yShift = Camera.cameraUp * (currentMouseCoordinates.y - Window.resolution.height.toFloat() / 2f)
+            var rayInitialPos = Camera.cameraPosition - xShift - yShift
+            val rayDirection = Camera.cameraFacingVector
+            val pinCoordinates = rayInitialPos + rayDirection * (-1f * rayInitialPos.y / rayDirection.y)
+            Player.setMoveToTargetPin(pinCoordinates)
           }
         }
         GLFW.GLFW_MOUSE_BUTTON_RIGHT -> {

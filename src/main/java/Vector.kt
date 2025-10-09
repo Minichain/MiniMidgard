@@ -39,7 +39,7 @@ class Vector2(x: Float = 0f, y: Float = 0f) : Vector() {
   operator fun plus(vector: Vector2): Vector2 =
     Vector2(x + vector.x, y + vector.y)
 
-  fun multiplyByFactor(factor: Float): Vector2 =
+  operator fun times(factor: Float): Vector2 =
     Vector2(x * factor, y * factor)
 
   fun dot(vector: Vector2): Float =
@@ -85,7 +85,7 @@ class Vector3(x: Float = 0f, y: Float = 0f, z: Float = 0f) : Vector() {
   operator fun plus(vector: Vector3): Vector3 =
     Vector3(x + vector.x, y + vector.y, z + vector.z)
 
-  fun multiplyByFactor(factor: Float): Vector3 =
+  operator fun times(factor: Float): Vector3 =
     Vector3(x * factor, y * factor, z * factor)
 
   fun dot(vector: Vector3): Float =
@@ -184,7 +184,7 @@ class Vector4(x: Float = 0f, y: Float = 0f, z: Float = 0f, k: Float = 0f) : Vect
     return Vector4(x, y, z, k)
   }
 
-  fun multiplyByFactor(factor: Float): Vector4 =
+  operator fun times(factor: Float): Vector4 =
     Vector4(x * factor, y * factor, z * factor, k * factor)
 
   fun dot(vector: Vector4): Float =

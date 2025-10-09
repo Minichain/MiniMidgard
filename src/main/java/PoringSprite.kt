@@ -100,13 +100,13 @@ class PoringSprite : Sprite() {
     val spriteWidth = getSpriteWidth(spriteAnimation, spriteOrientation)
     val spriteHeight = getSpriteHeight(spriteAnimation)
 
-    val upVector = Vector3(0f, 1f, 0f).multiplyByFactor(spriteHeight.toFloat())
-    val rightVector = Vector3(1f, 0f, 0f).multiplyByFactor(spriteWidth.toFloat() / 2f)
+    val upVector = Vector3(0f, 1f, 0f) * (spriteHeight.toFloat())
+    val rightVector = Vector3(1f, 0f, 0f) * (spriteWidth.toFloat() / 2f)
 
-    val vertex1 = (coordinates + upVector + rightVector).multiplyByFactor(1f / Window.resolution.height.toFloat())
-    val vertex2 = (coordinates + rightVector).multiplyByFactor(1f / Window.resolution.height.toFloat())
-    val vertex3 = (coordinates - rightVector).multiplyByFactor(1f / Window.resolution.height.toFloat())
-    val vertex4 = (coordinates + upVector - rightVector).multiplyByFactor(1f / Window.resolution.height.toFloat())
+    val vertex1 = (coordinates + upVector + rightVector) * (1f / Window.resolution.height.toFloat())
+    val vertex2 = (coordinates + rightVector) * (1f / Window.resolution.height.toFloat())
+    val vertex3 = (coordinates - rightVector) * (1f / Window.resolution.height.toFloat())
+    val vertex4 = (coordinates + upVector - rightVector) * (1f / Window.resolution.height.toFloat())
 
     if (flipTextureYAxis) {
       GraphicsManager.render(spriteSheet, vertex1, vertex2, vertex3, vertex4, u2, v1, u1, v2)
